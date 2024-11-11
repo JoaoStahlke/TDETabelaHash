@@ -19,11 +19,10 @@ public class TabelaHashSomaASCII extends TabelaHash<String> {
     public void inserir(String chave, String valor) {
         int indice = calcularIndice(chave);
 
-        // Tratamento de colisões com busca linear
         while (tabela[indice] != null) {
             numColisoes++;
             colisoesPorIndice.put(indice, colisoesPorIndice.getOrDefault(indice, 0) + 1);
-            indice = (indice + 1) % tamanho; // Incrementa o índice com busca linear
+            indice = (indice + 1) % tamanho;
         }
 
         tabela[indice] = valor;
@@ -40,21 +39,16 @@ public class TabelaHashSomaASCII extends TabelaHash<String> {
             indice = (indice + 1) % tamanho;
         }
 
-        return null; // Retorna null se não encontrar a chave
+        return null;
     }
 
     @Override
     protected int calcularIndice(String chave) {
         int soma = 0;
         for (char c : chave.toCharArray()) {
-            soma += (int) c; // Soma os valores ASCII de todos os caracteres
+            soma += (int) c;
         }
-        return soma % tamanho; // Retorna o índice para a chave
-    }
-
-    @Override
-    public void remover(String chave) {
-        // Opcional: Implementar caso necessário
+        return soma % tamanho;
     }
 
     public void carregarDados(String caminhoArquivo) {
@@ -69,11 +63,9 @@ public class TabelaHashSomaASCII extends TabelaHash<String> {
             long fimInsercao = System.nanoTime();
             double tempoInsercaoSegundos = (fimInsercao - inicioInsercao) / 1_000_000_000.0;
 
-            // Exibir resultados de inserção
             System.out.println("Número total de colisões: " + numColisoes);
             System.out.println("Tempo total de inserção: " + String.format("%.3f", tempoInsercaoSegundos) + " segundos");
 
-            // Tempo para buscar o conjunto de nomes
             String[] nomesParaBuscar = {"Abby", "Kaylyn", "Manon", "Zorah", "Vi"};
             long inicioBuscaConjunto = System.nanoTime();
 
@@ -94,7 +86,6 @@ public class TabelaHashSomaASCII extends TabelaHash<String> {
     public void mostrarRelatorio() {
         System.out.println("Cada índice possui uma chave (devido ao tratamento de colisões por busca linear).");
 
-        // Relatório de clusterização
         System.out.println("Relatório de clusterização (índices com colisões):");
         for (Map.Entry<Integer, Integer> entrada : colisoesPorIndice.entrySet()) {
             System.out.println("Índice " + entrada.getKey() + ": " + entrada.getValue() + " colisões");
